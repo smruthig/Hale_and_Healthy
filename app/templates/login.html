@@ -2,8 +2,16 @@
 
 {% block content %}
 <br><br><br><br><br>
+<div class='container' style="border:10px solid grey; padding-bottom:40px">
+<section class="page-section">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Login Page</h2>
+            <h3 class="section-subheading text-muted">Your privacy is our priority</h3>
+        </div>
+    </div>
+</section>
 <div class="column is-4 is-offset-4">
-    <h3 class="title">Login</h3>
     <div class="box">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -13,25 +21,30 @@
         {% endif %}
         {% endwith %}
         <form method="POST" action="/login">
+            <center>
             <div class="field">
-                <div class="control">
+                <div class="control container">
                     <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
                 </div>
             </div>
-
+            <br/>
             <div class="field">
-                <div class="control">
+                <div class="control container">
                     <input class="input is-large" type="password" name="password" placeholder="Your Password">
                 </div>
             </div>
+            <br/>
             <div class="field">
                 <label class="checkbox">
                     <input type="checkbox">
                     Remember me
                 </label>
             </div>
-            <button class="button is-block is-info is-large is-fullwidth">Login</button>
+            <br/>
+            <button class="button btn-success is-block is-info is-large is-fullwidth">Login</button>
+            </center>
         </form>
     </div>
+</div>
 </div>
 {% endblock %}
