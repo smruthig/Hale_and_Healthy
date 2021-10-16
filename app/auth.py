@@ -10,7 +10,7 @@ from . import db
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
-from csv import writer
+from csv import writer, reader
 #import cv2
 import random
 
@@ -35,8 +35,18 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     login_user(user, remember=remember)
+    with open('notes.csv', newline='') as f:
+        reade = reader(f)
+        data = list(reade)
+        glo = []
+        print(data)
+    for i in data:
+        if i[0] == email:
+            glo = i
+            break
+    print(glo)
 
-    return redirect(url_for('main.profile'))
+    return render_template("index.html", xyz=glo)
 
 
 @auth.route('/signup')
@@ -65,7 +75,8 @@ def signup_post():
     new_user = User(email=email, name=name,
                     password=generate_password_hash(password, method='sha256'))
     List = []
-    List.append(random_with_N_digits(10))
+    List.append(email)
+    List.append(name)
     List.append(' ')
     # Open our existing CSV file in append mode
     # Create a file object for this file
