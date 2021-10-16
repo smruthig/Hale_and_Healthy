@@ -35,7 +35,7 @@ def qrcode():
     print(os.getcwd())
     return render_template("qrcode.html")
 
-@app.route('/form')
+@app.route('/form', methods = ["GET", "POST"])
 def form():
     if request.method == "POST":
         form = request.form
