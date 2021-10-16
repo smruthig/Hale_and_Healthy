@@ -1,2 +1,2 @@
-id,doa,name,age,phno,sex,dob,weight,height,symptoms(block),diagnosis(block) and prescription(block)
-1,19-12-20,swaroop,19,9831234523,male,56,5'11,high fever and cough,heartbeat,dolo650
+id,name,doa,weight,height,age,symptoms(block),doctor,diagnosis(block),prescription(block)
+1,swaroop,19-12-20,56,5'11,19,high fever and cough,heartbeat,dolo650

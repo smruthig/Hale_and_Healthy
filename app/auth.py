@@ -14,10 +14,12 @@ from csv import writer, reader
 import cv2
 import random
 import base64
+import pandas as pd
 
 auth = Blueprint('auth', __name__)
 glo = []
 ema = ''
+na = ''
 
 
 @auth.route('/login')
@@ -38,7 +40,8 @@ def login_post():
     except Exception:
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
-
+    global na
+    na = user.name
     login_user(user, remember=remember)
     with open('notes.csv', newline='') as f:
         reade = reader(f)
@@ -204,8 +207,6 @@ def update():
             j += 1
         print(glo)
 
-        import pandas as pd
-
         # reading the csv file
         df = pd.read_csv("notes.csv")
         print(j)
@@ -221,3 +222,22 @@ def update():
 # def medical():
 #     print("asd")
 #     return render_template('medicalshop.html')
+
+
+@auth.route('/form', methods=["GET", "POST"])
+def mainform():
+    if request.method == "POST":
+        print(request.form)
+        # id,name,doa,weight,height,age,symptoms(block),doctor,diagnosis(block),prescription(block)
+        df = pd.read_csv('doc.csv')
+        id = df.shape[0]
+        l = list()
+        l.append(id)
+        l.append(na)
+        res = l + list(request.form.values())
+        res.pop(-1)
+        # f = request.files['prescription']
+        # f.save("/tmp/temp"+id+".png")
+        # res.append("/tmp/temp"+id+".png")
+        # print(res)
+        return render_template('form.html')
