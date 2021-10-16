@@ -4,6 +4,8 @@ from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
 import os
+import cv2
+
 auth = Blueprint('auth', __name__)
 
 
@@ -78,15 +80,19 @@ def profile():
     return render_template('profile.html')
 
 
-@auth.route("/qrcode")
-def qrcode():
-    print(os.getcwd())
-    return render_template("qrcode.html")
-
-
 @auth.route('/form')
 def form():
     if request.method == "POST":
         form = request.form
         print(form)
     return render_template('form.html')
+
+@auth.route('/qrcode', methods=["GET", "POST"])
+def qrcode():
+    if request.method == "POST":
+        f = request.files['file']
+
+        # img = cv2.imread(f)
+        # detector = cv2.QRCodeDetector()
+        print("worked")
+    return render_template('qrcode.html')
