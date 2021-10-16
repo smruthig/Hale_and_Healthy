@@ -30,14 +30,14 @@ def login():
 def logout():
     return 'Logout'
 
-@app.route("/details", methods=["POST","GET"])
-def details():
-    if request.method == "POST":
-        form = request.form
-        print(form)
-    return render_template("details.html")
-
 @app.route("/qrcode")
 def qrcode():
     print(os.getcwd())
     return render_template("qrcode.html")
+
+@app.route('/form')
+def form():
+    if request.method == "POST":
+        form = request.form
+        print(form)
+    return render_template('form.html')
