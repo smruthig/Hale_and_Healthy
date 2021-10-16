@@ -67,13 +67,14 @@
         <div class="output">
             <img id="photo" alt="The screen capture will appear in this box.">
         </div>
-        <form name='form1' method='post' action='/qrcode'>
-            <button class='btn btn-secondary' onclick='submitfn()'>Submit</button>
+        <form name='form1' id='form1' method='post' action='/qrcode'>
+            <button class='btn btn-secondary' onclick='submitfn()' type='button'>Submit</button>
             <input type='hidden' name='qr' id="my_hidden"/>
         </form>
     </div>
 
     <script>
+        var data=null;
     /* JS comes here */
     (function() {
 
@@ -86,6 +87,7 @@
         var canvas = null;
         var photo = null;
         var startbutton = null;
+        
 
         function startup() {
             video = document.getElementById('video');
@@ -135,7 +137,7 @@
             context.fillStyle = "#AAA";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
-            var data = canvas.toDataURL('image/png');
+            data = canvas.toDataURL('image/png');
             photo.setAttribute('src', data);
         }
 
@@ -146,7 +148,7 @@
                 canvas.height = height;
                 context.drawImage(video, 0, 0, width, height);
 
-                var data = canvas.toDataURL('image/png');
+                data = canvas.toDataURL('image/jpeg')//.replace(/^data:image\/jpeg;base64,/,"");
                 photo.setAttribute('src', data);
                 // var c = data.replace("image/png", "image/octet-stream");
                 /*$.ajax({
@@ -167,15 +169,15 @@
                 clearphoto();
             }
 
-            function submitfn(){
-                print(data)
-                document.getElementById('my_hidden').value = data;
-                document.forms["form1"].submit();
-            }
         }
-
+        
         window.addEventListener('load', startup, false);
     })();
+    function submitfn(){
+        console.log(data)
+        document.getElementById('my_hidden').value = data.replace(/^data:image\/jpeg;base64,/,"");
+        document.getElementById("form1").submit();
+    }
     </script>
 </body>
 
