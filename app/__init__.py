@@ -7,9 +7,9 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-
     app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
     db.init_app(app)
 
