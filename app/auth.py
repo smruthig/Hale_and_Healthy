@@ -128,21 +128,13 @@ def form():
 
 
 @auth.route('/uploader', methods=['GET', 'POST'])
-def upload_file():
+def uploader():
     if request.method == 'POST':
         f = request.files['prescription']
-        f.save(secure_filename(f.filename))
-        filename = "./temp.png"
-        print()
-        EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
-        EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-
-        contacts = ['YourAddress@gmail.com', 'test@example.com']
+        f.save("/tmp/temp1.png")
 
         EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
         EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-
-        contacts = ['YourAddress@gmail.com', 'test@example.com']
 
         msg = MIMEMultipart()
         msg['Subject'] = 'Deliver these!'
@@ -153,7 +145,7 @@ def upload_file():
         # files = os.listdir(cwd)  # Get all the files in that directory
         # print("Files in %r: %s" % (cwd, files))
 
-        ImgFileName = './app/temp1.png'
+        ImgFileName = '/tmp/temp1.png'
         with open(ImgFileName, 'rb') as f:
             img_data = f.read()
 
@@ -167,6 +159,8 @@ def upload_file():
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
+        return 'file uploaded successfully'
+    return render_template('medicalshop.html')
 
 
 @auth.route('/qrcode', methods=["GET", "POST"])
@@ -221,7 +215,7 @@ def update():
         return "working"
 
 
-@auth.route('/medical', methods=["GET", "POST"])
-def medical():
-    print("asd")
-    return render_template('medicalshop.html')
+# @auth.route('/medical', methods=["GET", "POST"])
+# def medical():
+#     print("asd")
+#     return render_template('medicalshop.html')

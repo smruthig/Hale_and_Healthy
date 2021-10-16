@@ -40,7 +40,7 @@
         <header class="masthead">
             <div class="container">
                 <div class="masthead-heading">Choose a medical shop nearby</div>
-                <form action="/uploader"> 
+                <form action="/uploader" method="POST"  enctype = "multipart/form-data"> 
                     <!-- //backend -->
                     <input type="radio" id="html" name="medicalshop" value="Ramu Medicals">
                     <label for="ramumedicals">Ramu Medicals</label><br>
@@ -49,9 +49,9 @@
                     <input type="radio" id="ABC Pharma" name="fav_language" value="ABC Pharma"><br>
                     <label for="ABC Pharma">ABC Pharma</label><br>
                     <label for="prescription">Upload prescription</label><br>
-                    <input type="file" id="prescription" name="prescription" accept="image/png, image/jpeg"> <br>
+                    <input type="file" id="prescription" name="prescription"> <br>
                     <input type="submit" />
-                  
+                </form> 
             </div>
         </header>
 
