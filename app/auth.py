@@ -10,10 +10,15 @@ from . import db
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
+from csv import writer, reader
+#import cv2
+import random
 import base64
 import cv2
 
 auth = Blueprint('auth', __name__)
+glo = []
+ema = ''
 
 
 @auth.route('/login')
@@ -26,7 +31,6 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
-
     user = User.query.filter_by(email=email).first()
 
     if not user and not check_password_hash(user.password, password):
@@ -34,13 +38,31 @@ def login_post():
         return redirect(url_for('auth.login'))
 
     login_user(user, remember=remember)
+    with open('notes.csv', newline='') as f:
+        reade = reader(f)
+        data = list(reade)
+        print(data)
+    for i in data:
+        if i[0] == email:
+            global glo
+            glo = i
+            break
+    global ema
+    ema = email
+    print(glo)
 
-    return redirect(url_for('main.profile'))
+    return render_template("index.html", xyz=glo)
 
 
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
+
+
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return random.randint(range_start, range_end)
 
 
 @auth.route('/signup', methods=['POST'])
@@ -57,6 +79,17 @@ def signup_post():
 
     new_user = User(email=email, name=name,
                     password=generate_password_hash(password, method='sha256'))
+    List = []
+    List.append(email)
+    List.append(name)
+    List.append(' ')
+    # Open our existing CSV file in append mode
+    # Create a file object for this file
+    with open('notes.csv', 'a') as f_object:
+
+        writer_object = writer(f_object)
+        writer_object.writerow(List)
+        f_object.close()
 
     db.session.add(new_user)
     db.session.commit()
@@ -140,6 +173,44 @@ def upload_file():
 @auth.route('/qrcode', methods=["GET", "POST"])
 def qrcode():
     if request.method == "POST":
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        # img = cv2.imread(f)
+        # detector = cv2.QRCodeDetector()
+        print("worked")
+    return render_template('qrcode.html')
+
+
+@auth.route('/update', methods=["POST"])
+def update():
+    fl = request.form['notes']
+
+    print(fl)
+    with open('notes.csv', newline='') as f:
+        reade = reader(f)
+        data = list(reade)
+        print(data)
+        global ema
+        j = 0
+        for i in data:
+            if i[0] == ema:
+                global glo
+                glo = i
+                break
+            j += 1
+        print(glo)
+
+        import pandas as pd
+
+        # reading the csv file
+        df = pd.read_csv("notes.csv")
+        print(j)
+        # updating the column value/data
+        df.loc[df['email'] == ema, 'notes'] = fl
+        print(df)
+        # writing into the file
+        df.to_csv("notes.csv", index=False)
+    return "working"
         f = request.form["qr"]
         decodeit = open('/tmp/qr.jpeg', 'wb')
         decodeit.write(base64.b64decode(bytes(f+"====", encoding="utf-8")))
