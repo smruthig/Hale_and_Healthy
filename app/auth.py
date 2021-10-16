@@ -11,7 +11,7 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from csv import writer, reader
-#import cv2
+import cv2
 import random
 import base64
 
@@ -31,8 +31,11 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
     user = User.query.filter_by(email=email).first()
-
-    if not user and not check_password_hash(user.password, password):
+    try:
+        if not user and not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('auth.login'))
+    except Exception:
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
 
@@ -175,8 +178,7 @@ def qrcode():
         detector = cv2.QRCodeDetector()
         data, bbox, _ = detector.detectAndDecode(img)
         if bbox is not None:
-            print(data)
-            return "QR scan worked"
+            return "<a href={}> <center> Click here for patient's details</a>".format(data)
         else:
             return render_template('QR.html')
     else:
