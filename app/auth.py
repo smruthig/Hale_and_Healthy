@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 from .models import User
@@ -10,6 +11,7 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 
+import cv2
 
 auth = Blueprint('auth', __name__)
 
@@ -85,12 +87,6 @@ def profile():
     return render_template('profile.html')
 
 
-@auth.route("/qrcode")
-def qrcode():
-    print(os.getcwd())
-    return render_template("qrcode.html")
-
-
 @auth.route('/form')
 def form():
     if request.method == "POST":
@@ -139,3 +135,14 @@ def upload_file():
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             smtp.send_message(msg)
+
+
+@auth.route('/qrcode', methods=["GET", "POST"])
+def qrcode():
+    if request.method == "POST":
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        # img = cv2.imread(f)
+        # detector = cv2.QRCodeDetector()
+        print("worked")
+    return render_template('qrcode.html')
