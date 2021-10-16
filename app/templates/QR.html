@@ -146,9 +146,9 @@
                 // var c = data.replace("image/png", "image/octet-stream");
                 $.ajax({
                     type: "POST",
-                    url: "script.php", //CHANGE ENDPOINT
+                    url: "/qrcode", //CHANGE ENDPOINT
                     data: { 
-                        imgBase64: data
+                        file: data
                     }
                     }).done(function(o) {
                     console.log('saved'); 
