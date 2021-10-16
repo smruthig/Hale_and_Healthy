@@ -1,9 +1,16 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
+from werkzeug.utils import secure_filename
 from .models import User
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 from . import db
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+
+
 auth = Blueprint('auth', __name__)
 
 
@@ -90,3 +97,45 @@ def form():
         form = request.form
         print(form)
     return render_template('form.html')
+
+
+@auth.route('/uploader', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        filename = "./temp.png"
+
+        EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
+        EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+        contacts = ['YourAddress@gmail.com', 'test@example.com']
+
+        EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
+        EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+        contacts = ['YourAddress@gmail.com', 'test@example.com']
+
+        msg = MIMEMultipart()
+        msg['Subject'] = 'Deliver these!'
+        msg['From'] = EMAIL_ADDRESS
+        msg['To'] = 'swaroopbhat510@gmail.com'
+
+        # cwd = os.getcwd()  # Get the current working directory (cwd)
+        # files = os.listdir(cwd)  # Get all the files in that directory
+        # print("Files in %r: %s" % (cwd, files))
+
+        ImgFileName = './app/temp1.png'
+        with open(ImgFileName, 'rb') as f:
+            img_data = f.read()
+
+        # Or use MIMEImage, etc
+        text = MIMEText("test")
+        msg.attach(text)
+        att = MIMEImage(img_data, name=os.path.basename(ImgFileName))
+        # Don't forget to convert the message to multipart first!
+        msg.attach(att)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
