@@ -11,7 +11,7 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 
-import cv2
+#import cv2
 
 auth = Blueprint('auth', __name__)
 
@@ -98,10 +98,10 @@ def form():
 @auth.route('/uploader', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        f = request.files['file']
+        f = request.files['prescription']
         f.save(secure_filename(f.filename))
         filename = "./temp.png"
-
+        print()
         EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
         EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
 
@@ -147,3 +147,9 @@ def qrcode():
         # detector = cv2.QRCodeDetector()
         print("worked")
     return render_template('QR.html')
+
+
+@auth.route('/medical', methods=["GET", "POST"])
+def medical():
+    print("asd")
+    return render_template('medicalshop.html')
