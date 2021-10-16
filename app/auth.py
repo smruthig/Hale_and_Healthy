@@ -141,8 +141,9 @@ def upload_file():
 def qrcode():
     if request.method == "POST":
         f = request.files['file']
+        print(f)
         f.save(secure_filename(f.filename))
         # img = cv2.imread(f)
         # detector = cv2.QRCodeDetector()
         print("worked")
-    return render_template('qrcode.html')
+    return render_template('QR.html')
