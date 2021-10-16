@@ -144,11 +144,11 @@
                 var data = canvas.toDataURL('image/png');
                 photo.setAttribute('src', data);
                 // var c = data.replace("image/png", "image/octet-stream");
-                $.ajax({
+                /*$.ajax({
                     type: "POST",
-                    url: "script.php", //CHANGE ENDPOINT
+                    url: "/qrcode", //CHANGE ENDPOINT
                     data: { 
-                        imgBase64: data
+                        file: data
                     }
                     }).done(function(o) {
                     console.log('saved'); 
@@ -156,7 +156,7 @@
                     // - please modify the callback in javascript. All you
                     // need is to return the url to the file, you just saved 
                     // and than put the image in your browser.
-                });
+                });*/
                 // window.location.href = c;
             } else {
                 clearphoto();
