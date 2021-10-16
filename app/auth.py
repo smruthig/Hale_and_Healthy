@@ -10,8 +10,9 @@ from . import db
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
-
-import cv2
+from csv import writer
+#import cv2
+import random
 
 auth = Blueprint('auth', __name__)
 
@@ -43,6 +44,12 @@ def signup():
     return render_template('signup.html')
 
 
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return random.randint(range_start, range_end)
+
+
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     email = request.form.get('email')
@@ -57,6 +64,16 @@ def signup_post():
 
     new_user = User(email=email, name=name,
                     password=generate_password_hash(password, method='sha256'))
+    List = []
+    List.append(random_with_N_digits(10))
+    List.append(' ')
+    # Open our existing CSV file in append mode
+    # Create a file object for this file
+    with open('notes.csv', 'a') as f_object:
+
+        writer_object = writer(f_object)
+        writer_object.writerow(List)
+        f_object.close()
 
     db.session.add(new_user)
     db.session.commit()
