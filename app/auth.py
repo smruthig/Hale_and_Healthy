@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
@@ -91,7 +92,7 @@ def form():
 def qrcode():
     if request.method == "POST":
         f = request.files['file']
-
+        f.save(secure_filename(f.filename))
         # img = cv2.imread(f)
         # detector = cv2.QRCodeDetector()
         print("worked")
