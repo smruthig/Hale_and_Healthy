@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Form validation example</title>
+  <style>
+    input{display:block; margin-bottom:10px;}
+  </style>
+</head>
+
+<body>
+  <h1>Form Validation Example</h1>
+  <h2>Please enter your name</h2>
+
+  <form action="/details" method="post">
+    <label for="first_name">First name:</label>
+    <input id="first_name" type="text" name="fname"/>
+    
+    <label for="last_name">Last name:</label>
+    <input id="last_name" type="text" name="lname"/>
+    
+    <input type="submit" value="Submit"/>
+  </form>
+</body>
+</html>
