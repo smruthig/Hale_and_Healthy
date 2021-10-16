@@ -15,6 +15,8 @@ from csv import writer, reader
 import random
 
 auth = Blueprint('auth', __name__)
+glo = []
+ema = ''
 
 
 @auth.route('/login')
@@ -27,7 +29,6 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
-
     user = User.query.filter_by(email=email).first()
 
     if not user and not check_password_hash(user.password, password):
@@ -38,12 +39,14 @@ def login_post():
     with open('notes.csv', newline='') as f:
         reade = reader(f)
         data = list(reade)
-        glo = []
         print(data)
     for i in data:
         if i[0] == email:
+            global glo
             glo = i
             break
+    global ema
+    ema = email
     print(glo)
 
     return render_template("index.html", xyz=glo)
@@ -174,3 +177,35 @@ def qrcode():
         # detector = cv2.QRCodeDetector()
         print("worked")
     return render_template('qrcode.html')
+
+
+@auth.route('/update', methods=["POST"])
+def update():
+    fl = request.form['notes']
+
+    print(fl)
+    with open('notes.csv', newline='') as f:
+        reade = reader(f)
+        data = list(reade)
+        print(data)
+        global ema
+        j = 0
+        for i in data:
+            if i[0] == ema:
+                global glo
+                glo = i
+                break
+            j += 1
+        print(glo)
+
+        import pandas as pd
+
+        # reading the csv file
+        df = pd.read_csv("notes.csv")
+        print(j)
+        # updating the column value/data
+        df.loc[df['email'] == ema, 'notes'] = fl
+        print(df)
+        # writing into the file
+        df.to_csv("notes.csv", index=False)
+    return "working"
