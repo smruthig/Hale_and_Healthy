@@ -14,7 +14,6 @@ from csv import writer, reader
 #import cv2
 import random
 import base64
-import cv2
 
 auth = Blueprint('auth', __name__)
 glo = []
@@ -173,12 +172,21 @@ def upload_file():
 @auth.route('/qrcode', methods=["GET", "POST"])
 def qrcode():
     if request.method == "POST":
-        f = request.files['file']
-        f.save(secure_filename(f.filename))
-        # img = cv2.imread(f)
-        # detector = cv2.QRCodeDetector()
-        print("worked")
-    return render_template('qrcode.html')
+        f = request.form["qr"]
+        decodeit = open('/tmp/qr.jpeg', 'wb')
+        decodeit.write(base64.b64decode(bytes(f+"====", encoding="utf-8")))
+        decodeit.close()
+
+        img = cv2.imread("/tmp/qr.jpeg")
+        detector = cv2.QRCodeDetector()
+        data, bbox, _ = detector.detectAndDecode(img)
+        if bbox is not None:
+            print(data)
+            return "QR scan worked"
+        else:
+            return render_template('QR.html')
+    else:
+        return render_template('QR.html')
 
 
 @auth.route('/update', methods=["POST"])
@@ -210,22 +218,7 @@ def update():
         print(df)
         # writing into the file
         df.to_csv("notes.csv", index=False)
-    return "working"
-        f = request.form["qr"]
-        decodeit = open('/tmp/qr.jpeg', 'wb')
-        decodeit.write(base64.b64decode(bytes(f+"====", encoding="utf-8")))
-        decodeit.close()
-
-        img = cv2.imread("/tmp/qr.jpeg")
-        detector = cv2.QRCodeDetector()
-        data, bbox, _ = detector.detectAndDecode(img)
-        if bbox is not None:
-            print(data)
-            return "QR scan worked"
-        else:
-            return render_template('QR.html')
-    else:
-        return render_template('QR.html')
+        return "working"
 
 
 @auth.route('/medical', methods=["GET", "POST"])
