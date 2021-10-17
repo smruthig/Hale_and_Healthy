@@ -224,7 +224,7 @@ def update():
 #     return render_template('medicalshop.html')
 
 
-@auth.route('/form', methods=["GET", "POST"])
+@auth.route('/foqw', methods=["GET", "POST"])
 def mainform():
     if request.method == "POST":
         print(request.form)
@@ -236,7 +236,8 @@ def mainform():
         l.append(na)
         res = l + list(request.form.values())
         res.pop(-1)
-        # f = request.files['prescription']
+        f = request.files
+        print(f)
         # f.save("/tmp/temp"+id+".png")
         # res.append("/tmp/temp"+id+".png")
         # print(res)
