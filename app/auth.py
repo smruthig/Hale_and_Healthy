@@ -308,3 +308,8 @@ def mainform():
 @auth.route('/fitness')
 def fitness():
     return render_template('fitness.html')
+
+
+@auth.route('/doctor')
+def doctor():
+    return render_template('doctorappointment.html')
