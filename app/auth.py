@@ -59,9 +59,9 @@ def login_post():
     notes = df.loc[df['email'] == ema, 'notes']
     notes = list(notes)
     try:
-        return render_template("index.html", notes = notes[0])
+        return render_template("index.html", notes=notes[0])
     except:
-        return render_template("index.html", notes = "")
+        return render_template("index.html", notes="")
 
 
 @auth.route('/signup')
@@ -120,9 +120,9 @@ def index():
     notes = df.loc[df['email'] == ema, 'notes']
     notes = list(notes)
     try:
-        return render_template("index.html", notes = notes[0])
+        return render_template("index.html", notes=notes[0])
     except:
-        return render_template("index.html", notes = "")
+        return render_template("index.html", notes="")
 
 
 @auth.route("/about")
@@ -140,8 +140,8 @@ def form():
     if request.method == "POST":
         form = request.form
     df = pd.read_csv("doc.csv")
-    notes = df.loc[df['id'] == ema,"diagnosis(block)"]
-    notes1 = df.loc[df['id'] == ema,"doctor"]
+    notes = df.loc[df['id'] == ema, "diagnosis(block)"]
+    notes1 = df.loc[df['id'] == ema, "doctor"]
     notes = list(notes)
     notes1 = list(notes1)
     print(notes)
@@ -191,11 +191,41 @@ def qrcode():
         decodeit = open('/tmp/qr.jpeg', 'wb')
         decodeit.write(base64.b64decode(bytes(f+"====", encoding="utf-8")))
         decodeit.close()
-
         img = cv2.imread("/tmp/qr.jpeg")
         detector = cv2.QRCodeDetector()
         data, bbox, _ = detector.detectAndDecode(img)
         if bbox is not None:
+            df = pd.read_csv('doc.csv')
+            global ema
+            print(ema)
+            qdf = df[df['email'] == ema]
+            print(qdf)
+            s = qdf.to_dict()
+            print(s)
+            global na
+            s1 = "The below is the medical info of "+na+". PFA the prescription.\n"
+            for i, j in s.items():
+                print(i)
+                s1 += str(i)+": "+str(j[0])+'\n'
+            msg = MIMEMultipart()
+            text = MIMEText(s1)
+
+            msg.attach(text)
+            ImgFileName = '/tmp/temp1.png'
+            with open(ImgFileName, 'rb') as f:
+                img_data = f.read()
+            att = MIMEImage(img_data, name=os.path.basename(ImgFileName))
+            # Don't forget to convert the message to multipart first!
+            msg.attach(att)
+            EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
+            EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+            msg['Subject'] = 'Client: '+na
+            msg['From'] = EMAIL_ADDRESS
+            msg['To'] = 'swaroopbhat510@gmail.com'
+
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                smtp.send_message(msg)
             return "<a href={}> <center> Click here for patient's details</a>".format(data)
         else:
             return render_template('QR.html')
@@ -233,16 +263,15 @@ def update():
         notes = df.loc[df['email'] == ema, 'notes']
         notes = list(notes)
         try:
-            return render_template("index.html", notes = notes[0])
+            return render_template("index.html", notes=notes[0])
         except:
-            return render_template("index.html", notes = "")
+            return render_template("index.html", notes="")
 
 
 # @auth.route('/medical', methods=["GET", "POST"])
 # def medical():
 #     print("asd")
 #     return render_template('medicalshop.html')
-
 
 @auth.route('/foqw', methods=["GET", "POST"])
 def mainform():
@@ -264,6 +293,18 @@ def mainform():
             pass
         # print(f)
         df = pd.read_csv('doc.csv')
-        
+        with open('doc.csv', 'a') as f_object:
+            writer_object = writer(f_object)
+            writer_object.writerow(res)
+        f_object.close()
         # print(res)
+        with open('doc.csv', 'a') as f_object:
+            writer_object = writer(f_object)
+            writer_object.writerow(res)
+            f_object.close()
         return render_template('form.html')
+
+
+@auth.route('/fitness')
+def fitness():
+    return render_template('fitness.html')
