@@ -140,8 +140,8 @@ def form():
     if request.method == "POST":
         form = request.form
     df = pd.read_csv("doc.csv")
-    notes = df.loc[df['id'] == ema, "diagnosis(block)"]
-    notes1 = df.loc[df['id'] == ema, "doctor"]
+    notes = df.loc[df['email'] == ema, "diagnosis(block)"]
+    notes1 = df.loc[df['email'] == ema, "doctor"]
     notes = list(notes)
     notes1 = list(notes1)
     print(notes)
@@ -313,3 +313,8 @@ def fitness():
 @auth.route('/doctor')
 def doctor():
     return render_template('doctorappointment.html')
+
+
+@auth.route('/menstrual')
+def menstrual():
+    return render_template('menstrualtracker.html')

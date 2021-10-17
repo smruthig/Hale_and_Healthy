@@ -2,21 +2,29 @@
 
 {% block content %}
         <!-- Masthead-->
-        <header class="masthead">
             <div class="container">
-                <div class="masthead-heading">Choose a medical shop nearby</div>
-                <form action="/uploader" method="POST"  enctype = "multipart/form-data"> 
+                    <section class="page-section">
+                        <div class="container">
+                            <div class="text-center">
+                                <h2 class="section-heading text-uppercase">Choose a medical shop nearby</h2>
+                            </div>
+                <form action="/uploader" enctype = "multipart/form-data" method="post"> 
                     <!-- //backend -->
+                    <div style="padding-left:40%;">
                     <input type="radio" id="html" name="medicalshop" value="Ramu Medicals">
                     <label for="ramumedicals">Ramu Medicals</label><br>
                     <input type="radio" id="krishnamedicals" name="fav_language" value="Krishna Medicals">
                     <label for="krishnamedicals">Krishna Medicals</label><br>
-                    <input type="radio" id="ABC Pharma" name="fav_language" value="ABC Pharma"><br>
-                    <label for="ABC Pharma">ABC Pharma</label><br>
-                    <label for="prescription">Upload prescription</label><br>
-                    <input type="file" id="prescription" name="prescription"> <br>
-                    <input type="submit" />
-                </form> 
+                    <input type="radio" id="ABC Pharma" name="fav_language" value="ABC Pharma">
+                    <label for="ABC Pharma">ABC Pharma</label>
+                  <br>
+                  <div style='padding-left: -9%;'>
+                    <label for="prescription">Upload prescription</label>
+                    <input type="file" id="prescription" name="prescription" accept="image/png, image/jpeg"><br>
+                    <input type="submit" type="file" />
+                  </div> 
+                </div>
             </div>
-        </header>
-        {% endblock %}
+
+
+{% endblock %}

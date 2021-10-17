@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+        
+        <section class="page-section bg-light" id="portfolio">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Period Tracker</h2>
+                    <h3 class="section-subheading text-muted">Track your menstrual cycle!</h3>
+                    <div class="container">
+                        <section class="page-section">
+                            <div class="container">
+                            
+                    <form action="/menstrual"> 
+                        <!-- //backend -->
+                      
+                      <div style='padding-left: -9%;'>
+                        <br>
+                        <h4>Enter period start date</h4><br><br>
+                        <input type="date" id="perioddate" name="perioddate">
+                        <br><br>
+                        <button onclick="periodenter()">Submit</button>
+
+                        <br><br><br>
+                        <h3>Predictions</h3>
+                        <h5>Nov 5-Nov 11</h5>
+                        <h5>Dec 7-Dec 13</h5>
+                        <h5>Jan 8-Jan 14</h5>
+                        <h5>Feb 9-Feb 15</h5>
+                        <h5>Mar 13-Mar 19</h5>
+
+                        <h5 >Period length- 7 Days</h5>
+                        <h5>Cycle length- 40 Days</h5>
+
+
+                      </div> 
+                    </div>
+                </div>
+                <script>
+                    function periodenter() {
+                      alert("Period recorded");
+                    //   add backend if needed
+                    }
+                </script>
+        </body>
+        </html>
+    {% endblock %}
