@@ -130,17 +130,22 @@ def about():
     return "All about Flask"
 
 
-@auth.route('/profile')
+@auth.route('/reminder')
 def profile():
-    return render_template('profile.html')
+    return render_template('reminder.html')
 
 
 @auth.route('/form')
 def form():
     if request.method == "POST":
         form = request.form
-        print(form)
-    return render_template('form.html')
+    df = pd.read_csv("doc.csv")
+    notes = df.loc[df['id'] == ema,"diagnosis(block)"]
+    notes1 = df.loc[df['id'] == ema,"doctor"]
+    notes = list(notes)
+    notes1 = list(notes1)
+    print(notes)
+    return render_template('form.html', dia=notes, doc=notes1)
 
 
 @auth.route('/uploader', methods=['GET', 'POST'])
@@ -255,5 +260,6 @@ def mainform():
         # print(f)
         f.save("/tmp/temp"+str(id)+".png")
         res.append("/tmp/temp"+str(id)+".png")
+        df = pd.read_csv('doc.csv')
         # print(res)
         return render_template('form.html')
