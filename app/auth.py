@@ -261,5 +261,6 @@ def mainform():
         f.save("/tmp/temp"+str(id)+".png")
         res.append("/tmp/temp"+str(id)+".png")
         df = pd.read_csv('doc.csv')
+        
         # print(res)
         return render_template('form.html')
