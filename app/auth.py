@@ -55,8 +55,13 @@ def login_post():
     global ema
     ema = email
     print(glo)
-
-    return render_template("index.html", xyz=glo)
+    df = pd.read_csv("notes.csv")
+    notes = df.loc[df['email'] == ema, 'notes']
+    notes = list(notes)
+    try:
+        return render_template("index.html", notes = notes[0])
+    except:
+        return render_template("index.html", notes = "")
 
 
 @auth.route('/signup')
@@ -111,8 +116,13 @@ def logout():
 
 @auth.route("/")
 def index():
-    print(os.getcwd())
-    return render_template("index.html")
+    df = pd.read_csv("notes.csv")
+    notes = df.loc[df['email'] == ema, 'notes']
+    notes = list(notes)
+    try:
+        return render_template("index.html", notes = notes[0])
+    except:
+        return render_template("index.html", notes = "")
 
 
 @auth.route("/about")
@@ -209,13 +219,18 @@ def update():
 
         # reading the csv file
         df = pd.read_csv("notes.csv")
-        print(j)
+        # print(j)
         # updating the column value/data
         df.loc[df['email'] == ema, 'notes'] = fl
-        print(df)
+        # print(df)
         # writing into the file
         df.to_csv("notes.csv", index=False)
-        return "working"
+        notes = df.loc[df['email'] == ema, 'notes']
+        notes = list(notes)
+        try:
+            return render_template("index.html", notes = notes[0])
+        except:
+            return render_template("index.html", notes = "")
 
 
 # @auth.route('/medical', methods=["GET", "POST"])
