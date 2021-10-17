@@ -41,7 +41,7 @@
             </div>
         </section>
 
-        <form method='post' action="/foqw" id="my_form" class='container' style="display:none; border:10px outset grey; padding-bottom:20px;margin-bottom:20px;">
+        <form method='post' action="/foqw" id="my_form" class='container' enctype = "multipart/form-data" style="display:none; border:10px outset grey; padding-bottom:20px;margin-bottom:20px;">
             <div class="form-group container">
                 <label class="col-form-label mt-4" for="inputDefault">Entry date</label>
                 <input type="text" name='date' pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control datepicker" placeholder="dd/mm/yyyy" id="inputDefault">
@@ -72,7 +72,7 @@
             </div>
             <div class="form-group container">
                 <label class="col-form-label mt-4" for="inputDefault">Prescription &nbsp;</label>
-                <input type="file" name="prescription" accept="image/*"></input>
+                <input type="file" name="prescription" >
             </div>
         <br>
             <button class='btn btn-success btn-xl text-uppercase' type='submit'>Submit</button>

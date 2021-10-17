@@ -251,9 +251,9 @@ def mainform():
         l.append(na)
         res = l + list(request.form.values())
         res.pop(-1)
-        f = request.files
-        print(f)
-        # f.save("/tmp/temp"+id+".png")
-        # res.append("/tmp/temp"+id+".png")
+        f = request.files["prescription"]
+        # print(f)
+        f.save("/tmp/temp"+str(id)+".png")
+        res.append("/tmp/temp"+str(id)+".png")
         # print(res)
         return render_template('form.html')
