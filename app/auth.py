@@ -275,3 +275,8 @@ def mainform():
             writer_object.writerow(res)
             f_object.close()
         return render_template('form.html')
+
+
+@auth.route('/fitness')
+def fitness():
+    return render_template('fitness.html')
