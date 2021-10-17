@@ -59,9 +59,9 @@ def login_post():
     notes = df.loc[df['email'] == ema, 'notes']
     notes = list(notes)
     try:
-        return render_template("index.html", notes = notes[0])
+        return render_template("index.html", notes=notes[0])
     except:
-        return render_template("index.html", notes = "")
+        return render_template("index.html", notes="")
 
 
 @auth.route('/signup')
@@ -120,9 +120,9 @@ def index():
     notes = df.loc[df['email'] == ema, 'notes']
     notes = list(notes)
     try:
-        return render_template("index.html", notes = notes[0])
+        return render_template("index.html", notes=notes[0])
     except:
-        return render_template("index.html", notes = "")
+        return render_template("index.html", notes="")
 
 
 @auth.route("/about")
@@ -140,8 +140,8 @@ def form():
     if request.method == "POST":
         form = request.form
     df = pd.read_csv("doc.csv")
-    notes = df.loc[df['id'] == ema,"diagnosis(block)"]
-    notes1 = df.loc[df['id'] == ema,"doctor"]
+    notes = df.loc[df['id'] == ema, "diagnosis(block)"]
+    notes1 = df.loc[df['id'] == ema, "doctor"]
     notes = list(notes)
     notes1 = list(notes1)
     print(notes)
@@ -233,9 +233,9 @@ def update():
         notes = df.loc[df['email'] == ema, 'notes']
         notes = list(notes)
         try:
-            return render_template("index.html", notes = notes[0])
+            return render_template("index.html", notes=notes[0])
         except:
-            return render_template("index.html", notes = "")
+            return render_template("index.html", notes="")
 
 
 # @auth.route('/medical', methods=["GET", "POST"])
@@ -261,6 +261,9 @@ def mainform():
         f.save("/tmp/temp"+str(id)+".png")
         res.append("/tmp/temp"+str(id)+".png")
         df = pd.read_csv('doc.csv')
-        
+        with open('doc.csv', 'a') as f_object:
+            writer_object = writer(f_object)
+            writer_object.writerow(res)
+        f_object.close()
         # print(res)
         return render_template('form.html')
