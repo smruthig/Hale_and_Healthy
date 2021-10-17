@@ -256,10 +256,13 @@ def mainform():
         l.append(na)
         res = l + list(request.form.values())
         res.pop(-1)
-        f = request.files["prescription"]
+        try:
+            f = request.files["prescription"]
+            f.save("/tmp/temp"+str(id)+".png")
+            res.append("/tmp/temp"+str(id)+".png")
+        except Exception as e:
+            pass
         # print(f)
-        f.save("/tmp/temp"+str(id)+".png")
-        res.append("/tmp/temp"+str(id)+".png")
         df = pd.read_csv('doc.csv')
         
         # print(res)

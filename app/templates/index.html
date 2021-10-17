@@ -100,7 +100,7 @@
                     <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
                         <!-- Portfolio item 4-->
                         <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="/doctor">
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
@@ -427,12 +427,12 @@
                                     <h2 class="text-uppercase">Notes</h2>
                                     <p class="item-intro text-muted">Quick way to make notes for future references</p>
                                     <form action='/update' method='post'>
-                                        <textarea name='notes' rows='20' cols='100'>{{ notes }}</textarea><br/>
+                                        <textarea name='notes' rows='20' cols='50'>{{ notes }}</textarea><br/>
                                         <button class="btn btn-success btn-xl text-uppercase" value='pq' data-bs-dismiss="modal" type="submit">
                                             <i class="fas fa-times me-1"></i>
                                             Save
                                         </button>
-                                        <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                        <button type="button" class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" >
                                             <i class="fas fa-times me-1"></i>
                                             Close
                                         </button>
